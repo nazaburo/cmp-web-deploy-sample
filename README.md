@@ -32,6 +32,15 @@ Use the run button in your IDE's editor gutter, or run tests using Gradle tasks:
   - JS target: `./gradlew :shared:jsTest`
 - iOS tests: `./gradlew :shared:iosSimulatorArm64Test`
 
+### Deploying the web app to GitHub Pages
+
+Pushing to `main` triggers [.github/workflows/deploy-pages.yml](./.github/workflows/deploy-pages.yml), which builds the
+Wasm target (`./gradlew :webApp:wasmJsBrowserDistribution`) and publishes
+`webApp/build/dist/wasmJs/productionExecutable` to GitHub Pages.
+
+Before the first deploy, set **Settings → Pages → Build and deployment → Source** to **GitHub Actions** in the
+repository settings.
+
 ---
 
 Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
