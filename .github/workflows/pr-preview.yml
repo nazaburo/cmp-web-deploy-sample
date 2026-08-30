@@ -34,7 +34,14 @@ jobs:
         if: github.event.action != 'closed'
         run: ./gradlew :webApp:wasmJsBrowserDistribution
 
+      - name: Assemble preview site
+        if: github.event.action != 'closed'
+        run: |
+          mkdir -p site-stage
+          cp -r webApp/build/dist/wasmJs/productionExecutable/. site-stage/
+          cp -r docs site-stage/docs
+
       - name: Deploy PR preview
         uses: rossjrw/pr-preview-action@v1
         with:
-          source-dir: webApp/build/dist/wasmJs/productionExecutable
+          source-dir: site-stage
