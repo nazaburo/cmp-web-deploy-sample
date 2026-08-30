@@ -1,0 +1,40 @@
+name: PR preview
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: pr-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        if: github.event.action != 'closed'
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: 21
+
+      - name: Setup Gradle
+        if: github.event.action != 'closed'
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build web app (wasmJs)
+        if: github.event.action != 'closed'
+        run: ./gradlew :webApp:wasmJsBrowserDistribution
+
+      - name: Deploy PR preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: webApp/build/dist/wasmJs/productionExecutable

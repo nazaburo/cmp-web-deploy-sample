@@ -36,10 +36,17 @@ Use the run button in your IDE's editor gutter, or run tests using Gradle tasks:
 
 Pushing to `main` triggers [.github/workflows/deploy-pages.yml](./.github/workflows/deploy-pages.yml), which builds the
 Wasm target (`./gradlew :webApp:wasmJsBrowserDistribution`) and publishes
-`webApp/build/dist/wasmJs/productionExecutable` to GitHub Pages.
+`webApp/build/dist/wasmJs/productionExecutable` to the root of the `gh-pages` branch.
 
-Before the first deploy, set **Settings → Pages → Build and deployment → Source** to **GitHub Actions** in the
-repository settings.
+Before the first deploy, set **Settings → Pages → Build and deployment → Source** to **Deploy from a branch**, and
+pick **`gh-pages` / `(root)`** (the branch is created automatically by the first successful workflow run).
+
+### Pull request previews
+
+Opening or updating a pull request triggers [.github/workflows/pr-preview.yml](./.github/workflows/pr-preview.yml),
+which builds the Wasm target and publishes it to `pr-preview/pr-<number>/` on the `gh-pages` branch using
+[rossjrw/pr-preview-action](https://github.com/rossjrw/pr-preview-action). The action posts (and keeps updated) a
+comment on the PR with the live preview link, and removes the preview automatically when the PR is closed.
 
 ---
 
