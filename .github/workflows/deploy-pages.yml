@@ -31,9 +31,15 @@ jobs:
       - name: Build web app (wasmJs)
         run: ./gradlew :webApp:wasmJsBrowserDistribution
 
+      - name: Assemble site
+        run: |
+          mkdir -p site-stage
+          cp -r webApp/build/dist/wasmJs/productionExecutable/. site-stage/
+          cp -r docs site-stage/docs
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: webApp/build/dist/wasmJs/productionExecutable
+          publish_dir: site-stage
           keep_files: true

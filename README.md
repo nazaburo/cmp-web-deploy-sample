@@ -48,6 +48,14 @@ which builds the Wasm target and publishes it to `pr-preview/pr-<number>/` on th
 [rossjrw/pr-preview-action](https://github.com/rossjrw/pr-preview-action). The action posts (and keeps updated) a
 comment on the PR with the live preview link, and removes the preview automatically when the PR is closed.
 
+### Spec docs
+
+[/docs](./docs) holds the project's Markdown spec docs, rendered client-side by
+[docsify](https://docsify.js.org/) (no build step — `index.html` just loads docsify from a CDN and reads the
+other `.md` files). Both workflows copy `docs/` alongside the built web app before publishing, so it's served at
+`/docs/` next to the app root (and at `pr-preview/pr-<number>/docs/` for PR previews). Add a page by dropping a
+new `.md` file in `docs/` and linking it from `docs/_sidebar.md`.
+
 ---
 
 Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
